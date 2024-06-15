@@ -1,9 +1,12 @@
-import { Ship } from "./js/classes.js";
+import { Ship, Gameboard } from "./js/classes.js";
 
-const myShip = new Ship(3)
+const testShipOne = new Ship(4, [2,3], 'horizontal')
+const testShipTwo = new Ship(3, [6, 5])
+const testBoard = new Gameboard()
 
-console.log(myShip)
-console.log(myShip.hit())
-console.log(myShip.hit())
-console.log(myShip.hit())
-console.log(myShip.isSunk())
+console.log(testShipOne)
+console.log(testShipTwo)
+
+testBoard.coordinate(testShipOne)
+testBoard.coordinate(testShipTwo)
+console.log(testBoard)
