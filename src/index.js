@@ -10,3 +10,6 @@ console.log(testShipTwo)
 testBoard.coordinate(testShipOne)
 testBoard.coordinate(testShipTwo)
 console.log(testBoard)
+
+testBoard.receiveAttack([2,3])
+testBoard.receiveAttack([4,2])

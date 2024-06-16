@@ -1,5 +1,5 @@
 export class Ship {
-    constructor(shipLength, position, direction='vertical') {
+    constructor(shipLength, position=[], direction='vertical') {
         this.shipLength = shipLength
         this.hits = 0
         this.sunk = false
@@ -24,25 +24,41 @@ export class Gameboard {
     constructor() {
         this.current = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => 0));
         this.ships = []
+        this.visited = 0
     }
 
     coordinate(ship) {
+        this.ships.push(ship)
+
         if (ship.direction=='vertical') {
             for (let i = 0; i < ship.shipLength; i++) {
                 this.current[ship.position[0]][ship.position[1]+i] = 1;
-                this.ships.push([ship.position[0], ship.position[1]+i])
+                ship.position.push([ship.position[0], ship.position[1]+i])
             }
         } else {
             for (let i = 0; i < ship.shipLength; i++) {
                 this.current[ship.position[0]+i][ship.position[1]] = 1;
-                this.ships.push([ship.position[0]+i, ship.position[1]])
+                ship.position.push([ship.position[0], ship.position[1]+i])
             }
         }
+        ship.position.splice(0, 2);
     }
 
     receiveAttack(positionHit) {
-        if (positionHit == [position[0], position[1]]) {
-            
+        this.ships.forEach(ship => {
+            ship.position.forEach(pos => {
+                if (pos[0] === positionHit[0] && pos[1] === positionHit[1]) {
+                    ship.hit();
+                }
+            });
+        });
+        this.current[positionHit[0]][positionHit[1]] = 2;
+        this.visited++;
+    }
+
+    isEndGame() {
+        if (this.visited === 100) {
+            console.log('No more place!!! 0_0')
         }
     }
 }
