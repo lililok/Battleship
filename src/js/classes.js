@@ -25,6 +25,7 @@ export class Gameboard {
         this.current = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => 0));
         this.ships = []
         this.visited = 0
+        this.hits = 0
     }
 
     coordinate(ship) {
@@ -49,6 +50,7 @@ export class Gameboard {
             ship.position.forEach(pos => {
                 if (pos[0] === positionHit[0] && pos[1] === positionHit[1]) {
                     ship.hit();
+                    this.hits++;
                 }
             });
         });
@@ -60,9 +62,15 @@ export class Gameboard {
         if (this.visited === 100) {
             console.log('No more place!!! 0_0')
         }
+        if (this.hits === 30) {
+            console.log('You lost!!! >:]')
+        }
     }
 }
 
 export class Player {
-    
+    constructor(gameboard, type='human') {
+        this.gameboard = gameboard
+        this.type = type
+    }
 }

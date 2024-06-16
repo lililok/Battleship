@@ -10,7 +10,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html', 
+      template: 'src/index.html',
       inject: "head",
       scriptLoading: "defer"
     }),
@@ -32,5 +32,5 @@ module.exports = {
     ],
   },
   mode: 'development',
-  watch: true, 
+  watch: true,
 };
