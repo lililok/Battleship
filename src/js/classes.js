@@ -69,8 +69,9 @@ export class Gameboard {
 }
 
 export class Player {
-    constructor(gameboard, type='human') {
-        this.gameboard = gameboard
+    constructor(name, type='human', gameboard) {
+        this.name = name
         this.type = type
+        this.gameboard = gameboard
     }
 }
