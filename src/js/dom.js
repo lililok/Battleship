@@ -35,6 +35,17 @@ export function startForm(isSecond) {
     return dialog;
 }
 
-export function renderBoard(board) {
-    
+export function placeShips(playerContainer, playerBoard) {
+    const boardDiv = playerContainer.querySelector("#board-container");
+    const rowDivs = boardDiv.querySelectorAll(".row");
+
+    rowDivs.forEach(rowDiv => {
+        const cells = rowDiv.querySelectorAll("div");
+        cells.forEach(cell => {
+            cell.addEventListener('click', function () {
+                playerBoard.coordinate(cell.id)
+                playerBoard.render()
+            });
+        });
+    });
 }

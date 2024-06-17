@@ -66,6 +66,37 @@ export class Gameboard {
             console.log('You lost!!! >:]')
         }
     }
+
+    render() {
+        const boardDiv = document.createElement("div");
+        boardDiv.id = "board-container"
+
+        this.current.forEach((row, indexRow) => {
+            const rowDiv = document.createElement("div");
+            rowDiv.className = "row";
+    
+            row.forEach((cell, indexCol) => {
+                const boardCell = document.createElement("div");
+                boardCell.id = `[${indexRow}, ${indexCol}]`;
+    
+                if (cell === 0) {
+                    boardCell.className = "unvisited";
+                } else if (cell === 1) {
+                    boardCell.className = "unvisited ship";
+                } else if (cell === 2) {
+                    boardCell.className = "visited";
+                } else {
+                    boardCell.className = "visited ship";
+                }
+    
+                rowDiv.appendChild(boardCell);
+            });
+    
+            boardDiv.appendChild(rowDiv);
+        });
+    
+        return boardDiv;
+    }
 }
 
 export class Player {

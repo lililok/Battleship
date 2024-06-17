@@ -1,4 +1,4 @@
-import { startForm } from "./dom.js";
+import { startForm, listenBoard } from "./dom.js";
 import { Ship, Gameboard, Player } from "./classes.js";
 
 export function gameStart() {
@@ -16,7 +16,8 @@ export function gameStart() {
         secondForm.addEventListener("submit", function(event) {
             event.preventDefault();
             const playerTwoName = document.getElementById("player-name-input").value;
-            const playerTwoType = document.getElementById("player-type-input").value;
+            const playerTwoTypeInput = document.getElementById("player-type-input").checked;
+            const playerTwoType = playerTwoTypeInput ? "computer" : "human";
 
             secondForm.close();
             secondForm.remove();
@@ -37,11 +38,17 @@ export function gameStart() {
 }
 
 export function gameCurrent(playerOne, playerTwo) {
-    console.log(playerOne, playerTwo)
+    const playerOneContainer = document.querySelector('.player-1');
+    playerOneContainer.appendChild(playerOne.gameboard.render())
+
+    const playerTwoContainer = document.querySelector('.player-2');
+    playerTwoContainer.appendChild(playerTwo.gameboard.render())
+
+    placeShips(playerOneContainer, playerOne.gameboard)
     //render boards
     //listens to clicks and places ships
     //randomizes ships if pc
-    //pass turns
+    //pass turns (as another state) if not pc
     //check values
     //if values == gameovervalues call gameover
 }

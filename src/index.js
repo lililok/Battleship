@@ -1,23 +1,13 @@
+import { gameStart, gameCurrent } from "./js/states.js";
 import { Ship, Gameboard, Player } from "./js/classes.js";
-import { gameStart } from "./js/states.js";
-
-/*const testShipOne = new Ship(4, [2,3], 'horizontal')
-const testShipTwo = new Ship(3, [6, 5])
-const testBoard = new Gameboard()
-const testPlayer = new Player(testBoard, 'computer')
-
-console.log(testShipOne)
-console.log(testShipTwo)
-
-testBoard.coordinate(testShipOne)
-testBoard.coordinate(testShipTwo)
-console.log(testBoard)
-
-testBoard.receiveAttack([2,3])
-testBoard.receiveAttack([4,2])
-
-console.log(testPlayer)*/
+import './styles.css';
 
 document.addEventListener('DOMContentLoaded', () => {
-    gameStart()
+    const playerOneGameBoard = new Gameboard()
+    const playerTwoGameBoard = new Gameboard()
+
+    const playerOne = new Player('A', 'human', playerOneGameBoard)
+    const playerTwo = new Player('B', 'human', playerTwoGameBoard)
+
+    gameCurrent(playerOne, playerTwo)
 });

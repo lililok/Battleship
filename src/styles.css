@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+}
+
+/* main */
+
+.main-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+/* forms */
+
+dialog {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    border: none;
+}
+
+/* boards */
+
+.row > div {
+    border: 3px solid black;
+    width: 30px;
+    height: 50px;
+}
+
+#board-container {
+    display: flex;
+    flex-direction: row;
+}
