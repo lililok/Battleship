@@ -1,4 +1,4 @@
-import { startForm, listenBoard } from "./dom.js";
+import { startForm, placeShips } from "./dom.js";
 import { Ship, Gameboard, Player } from "./classes.js";
 
 export function gameStart() {
@@ -40,11 +40,13 @@ export function gameStart() {
 export function gameCurrent(playerOne, playerTwo) {
     const playerOneContainer = document.querySelector('.player-1');
     playerOneContainer.appendChild(playerOne.gameboard.render())
+    placeShips(playerOneContainer, playerOne)
+
+    passTurns();
 
     const playerTwoContainer = document.querySelector('.player-2');
     playerTwoContainer.appendChild(playerTwo.gameboard.render())
-
-    placeShips(playerOneContainer, playerOne.gameboard)
+    placeShips(playerTwoContainer, playerTwo)
     //render boards
     //listens to clicks and places ships
     //randomizes ships if pc
@@ -57,4 +59,8 @@ export function gameOver() {
     //print results
     //display reset button
     //clear
+}
+
+export function passTurns() {
+    
 }

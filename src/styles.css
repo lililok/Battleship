@@ -37,3 +37,9 @@ dialog {
     display: flex;
     flex-direction: row;
 }
+
+/* cells */
+
+.unvisited.ship {
+    background-color: blueviolet;
+}

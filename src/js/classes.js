@@ -22,29 +22,30 @@ export class Ship {
 
 export class Gameboard {
     constructor() {
-        this.current = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => 0));
+        this.current = Array.from({ length: 10 }, () => Array(10).fill(0));
         this.ships = []
         this.visited = 0
         this.hits = 0
     }
 
     coordinate(ship) {
+        if (!this.validation(ship)) {
+            throw new Error("you almost broke the game -_-, try again!!!");
+        }
+
         this.ships.push(ship)
 
-        if (ship.direction=='vertical') {
+        if (ship.direction === 'horizontal') {
             for (let i = 0; i < ship.shipLength; i++) {
-                this.current[ship.position[0]][ship.position[1]+i] = 1;
-                ship.position.push([ship.position[0], ship.position[1]+i])
+                this.current[ship.position[0]][ship.position[1] + i] = 1;
             }
         } else {
             for (let i = 0; i < ship.shipLength; i++) {
-                this.current[ship.position[0]+i][ship.position[1]] = 1;
-                ship.position.push([ship.position[0], ship.position[1]+i])
+                this.current[ship.position[0] + i][ship.position[1]] = 1;
             }
         }
-        ship.position.splice(0, 2);
     }
-
+    
     receiveAttack(positionHit) {
         this.ships.forEach(ship => {
             ship.position.forEach(pos => {
@@ -96,6 +97,51 @@ export class Gameboard {
         });
     
         return boardDiv;
+    }
+
+    validation(ship) {
+        const [row, col] = ship.position;
+        const shipLength = ship.shipLength;
+        const direction = ship.direction;
+
+        const bounds = () => {
+            if (direction === 'horizontal') {
+                return col + shipLength > 10;
+            } else {
+                return row + shipLength > 10;
+            }
+        };
+
+        const collision = () => {
+            const deltas = [-1, 0, 1];
+
+            for (let i = 0; i < shipLength; i++) {
+                const currentRow = direction === 'horizontal' ? row : row+i;
+                const currentCol = direction === 'horizontal' ? col+i : col;
+
+                for (let dRow of deltas) {
+                    for (let dCol of deltas) {
+                        const newRow = currentRow + dRow;
+                        const newCol = currentCol + dCol;
+                        if (
+                            newRow >= 0 && newRow < 10 &&
+                            newCol >= 0 && newCol < 10 &&
+                            this.current[newRow][newCol] === 1
+                        ) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        if (bounds() || collision()) {
+            return false;
+        }
+
+        return true;
     }
 }
 
