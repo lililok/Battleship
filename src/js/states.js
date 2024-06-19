@@ -42,11 +42,22 @@ export function gameCurrent(playerOne, playerTwo) {
     playerOneContainer.appendChild(playerOne.gameboard.render())
     placeShips(playerOneContainer, playerOne)
 
+    //if second player is not a pc -_-
+
     passTurns();
 
     const playerTwoContainer = document.querySelector('.player-2');
     playerTwoContainer.appendChild(playerTwo.gameboard.render())
     placeShips(playerTwoContainer, playerTwo)
+
+    /*gameStart(currplayer);
+        eventListener(player)
+        if gameboard_curr == endgame:
+            gameOver()
+        else:
+            currplayer = !currplayer
+            gamestart(currplayer)*/
+
     //render boards
     //listens to clicks and places ships
     //randomizes ships if pc
@@ -62,5 +73,6 @@ export function gameOver() {
 }
 
 export function passTurns() {
-    
+    //clears current container
+    //waits for passturn button click
 }
