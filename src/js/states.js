@@ -1,7 +1,7 @@
 import { startForm, placeShips } from "./dom.js";
 import { Ship, Gameboard, Player } from "./classes.js";
 
-export function gameStart() {
+export function gameStartForms() {
     const firstForm = startForm(false)
 
     firstForm.addEventListener("submit", function(event) {
@@ -37,26 +37,18 @@ export function gameStart() {
     //call gamecurrent
 }
 
-export function gameCurrent(playerOne, playerTwo) {
+export function gameStartShips(playerOne, playerTwo) {
     const playerOneContainer = document.querySelector('.player-1');
     playerOneContainer.appendChild(playerOne.gameboard.render())
     placeShips(playerOneContainer, playerOne)
 
     //if second player is not a pc -_-
 
-    passTurns();
+    //passTurns(playerOneContainer);
 
-    const playerTwoContainer = document.querySelector('.player-2');
-    playerTwoContainer.appendChild(playerTwo.gameboard.render())
-    placeShips(playerTwoContainer, playerTwo)
-
-    /*gameStart(currplayer);
-        eventListener(player)
-        if gameboard_curr == endgame:
-            gameOver()
-        else:
-            currplayer = !currplayer
-            gamestart(currplayer)*/
+    //const playerTwoContainer = document.querySelector('.player-2');
+    //playerTwoContainer.appendChild(playerTwo.gameboard.render())
+    //placeShips(playerTwoContainer, playerTwo)
 
     //render boards
     //listens to clicks and places ships
@@ -66,13 +58,41 @@ export function gameCurrent(playerOne, playerTwo) {
     //if values == gameovervalues call gameover
 }
 
+export function gameCurrent() {
+        /*gameStart(currplayer);
+        eventListener(player)
+        if gameboard_curr == endgame:
+            gameOver()
+        else:
+            currplayer = !currplayer
+            passTurns(currplayer)*/
+}
+
 export function gameOver() {
     //print results
     //display reset button
     //clear
 }
 
-export function passTurns() {
+export function passTurns(container) {
+    container.innerHTML = ''
+
+    const mainContent = document.querySelector('.main-content');
+
+    const passText = document.createElement("p")
+    passText.textContent = "Change turns!";
+    
+    const passButton = document.createElement("button")
+    passButton.textContent = "next";
+
+    container.appendChild(passText)
+    container.appendChild(passButton)
+
+    passButton.addEventListener('click', function () {
+        container.innerHTML = ''
+
+    });
     //clears current container
     //waits for passturn button click
+    //callgamestart function onclick
 }
