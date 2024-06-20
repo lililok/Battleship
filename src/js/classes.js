@@ -24,6 +24,7 @@ export class Gameboard {
     constructor() {
         this.current = Array.from({ length: 10 }, () => Array(10).fill(0));
         this.ships = []
+        this.shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
         this.visited = 0
         this.hits = 0
     }
@@ -145,9 +146,7 @@ export class Gameboard {
     }
 
     randomize() {
-        const shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
-
-        shipSizes.forEach(size => {
+        this.shipSizes.forEach(size => {
             let placed = false;
 
             while (!placed) {

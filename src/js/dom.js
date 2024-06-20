@@ -31,11 +31,10 @@ export function startForm() {
 }
 
 export function placeShips(player, container) {
-    const shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
     let shipSizesIndex = 0;
 
     function eventListeners(direction) {
-        if (shipSizesIndex === shipSizes.length) {
+        if (shipSizesIndex === player.gameboard.shipSizes.length) {
             return;
         }
 
@@ -62,7 +61,7 @@ export function placeShips(player, container) {
             const cells = rowDiv.querySelectorAll("div");
             cells.forEach(cell => {
                 cell.addEventListener('click', function () {
-                    const newShip = new Ship(shipSizes[shipSizesIndex], JSON.parse(cell.id), directionButton.id)
+                    const newShip = new Ship(player.gameboard.shipSizes[shipSizesIndex], JSON.parse(cell.id), directionButton.id)
                     player.gameboard.coordinate(newShip)
                     shipSizesIndex++;
                     container.innerHTML = '';
