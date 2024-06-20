@@ -1,7 +1,6 @@
 import { Ship } from "./classes.js";
-import { passTurns } from "./states.js";
 
-export function startForm(isSecond) {
+export function startForm() {
     const body = document.querySelector('body');
 
     const dialog = document.createElement("dialog");
@@ -17,13 +16,6 @@ export function startForm(isSecond) {
     playerName.placeholder = "Name";
     form.appendChild(playerName);
 
-    if (isSecond === true) {
-        const typeInput = document.createElement("input");
-        typeInput.type = "checkbox"
-        typeInput.id = "player-type-input";
-        form.appendChild(typeInput);
-    }
-
     const submitButton = document.createElement("button");
     submitButton.id = 'submit-button';
     submitButton.type = "submit";
@@ -38,22 +30,21 @@ export function startForm(isSecond) {
     return dialog;
 }
 
-export function placeShips(playerContainer, player) {
+export function placeShips(player, container) {
     const shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
     let shipSizesIndex = 0;
 
     function eventListeners(direction) {
         if (shipSizesIndex === shipSizes.length) {
-            //passTurns(playerContainer);
             return;
         }
 
-        const boardDiv = playerContainer.querySelector("#board-container");
+        const boardDiv = container.querySelector("#board-container");
 
         const directionButton = document.createElement("button")
         directionButton.id = direction;
         directionButton.textContent = "change direction";
-        playerContainer.appendChild(directionButton)
+        container.appendChild(directionButton)
 
         directionButton.addEventListener('click', function () {
             if (directionButton.id === 'vertical') {
@@ -72,15 +63,10 @@ export function placeShips(playerContainer, player) {
             cells.forEach(cell => {
                 cell.addEventListener('click', function () {
                     const newShip = new Ship(shipSizes[shipSizesIndex], JSON.parse(cell.id), directionButton.id)
-                    console.log(newShip)
-
                     player.gameboard.coordinate(newShip)
-                    console.log(player.gameboard)
-
                     shipSizesIndex++;
-                    playerContainer.innerHTML = '';
-
-                    playerContainer.appendChild(player.gameboard.render())
+                    container.innerHTML = '';
+                    container.appendChild(player.gameboard.render())
                     eventListeners(direction)
                 });
             });

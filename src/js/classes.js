@@ -30,7 +30,7 @@ export class Gameboard {
 
     coordinate(ship) {
         if (!this.validation(ship)) {
-            throw new Error("you almost broke the game -_-, try again!!!");
+            throw new Error("you almost broke the game -_- try again!!!");
         }
 
         this.ships.push(ship)
@@ -142,6 +142,27 @@ export class Gameboard {
         }
 
         return true;
+    }
+
+    randomize() {
+        const shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+
+        shipSizes.forEach(size => {
+            let placed = false;
+
+            while (!placed) {
+                const direction = Math.random() < 0.5 ? 'horizontal' : 'vertical';
+                const row = Math.floor(Math.random() * 10);
+                const col = Math.floor(Math.random() * 10);
+
+                const newShip = new Ship(size, [row, col], direction);
+
+                if (this.validation(newShip)) {
+                    this.coordinate(newShip);
+                    placed = true;
+                }
+            }
+        });
     }
 }
 
