@@ -1,4 +1,5 @@
 import { Ship } from "./classes.js";
+import { passTurns } from "./states.js";
 
 export function startForm(isSecond) {
     const body = document.querySelector('body');
@@ -43,6 +44,7 @@ export function placeShips(playerContainer, player) {
 
     function eventListeners(direction) {
         if (shipSizesIndex === shipSizes.length) {
+            //passTurns(playerContainer);
             return;
         }
 
