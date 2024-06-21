@@ -16,6 +16,12 @@ body {
     justify-content: space-around;
 }
 
+h1 {
+    text-align: center;    
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
 /* forms */
 
 dialog {
@@ -42,4 +48,16 @@ dialog {
 
 .unvisited.ship {
     background-color: blueviolet;
+}
+
+.visited.ship {
+    background-color: rgb(194, 10, 10);
+}
+
+.visited {
+    background-color: rgb(181, 117, 241);
+}
+
+.unvisited {
+    
 }

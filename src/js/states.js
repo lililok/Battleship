@@ -38,30 +38,40 @@ export function gameStartShips(player, bot) {
 
 export function gameCurrent(player, bot) {
     const botBoardDiv = document.querySelector(".player-2 #board-container");
+    const playerContainer = document.querySelector('.player-1');
+    const botContainer = document.querySelector('.player-2');
 
     const rowDivs = botBoardDiv.querySelectorAll(".row");
 
     rowDivs.forEach(rowDiv => {
         const cells = rowDiv.querySelectorAll("div");
         cells.forEach(cell => {
+            //if cell class != visited
             cell.addEventListener('click', function () {
                 const positionHit = JSON.parse(cell.id)
                 bot.gameboard.receiveAttack(positionHit)
-                bot.gameboard.render()
-                console.log(JSON.parse(cell.id))
-                console.log(bot.gameboard)
+                botContainer.innerHTML = '';
+                botContainer.appendChild(bot.gameboard.render())
+
+                //console.log(JSON.parse(cell.id))
+                //console.log(bot.gameboard)
+
+                player.gameboard.receiveAttack([Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]);
+                playerContainer.innerHTML = '';
+                playerContainer.appendChild(player.gameboard.render())
+
+                if (player.gameboard.isEndGame() || bot.gameboard.isEndGame()) {
+                    gameOver()
+                } else {
+                    gameCurrent(player, bot)
+                }
             });
         });
     });
-        /*gameStart(currplayer);
-        eventListener(player)
-        if gameboard_curr == endgame:
-            gameOver()
-        else:
-            attack*/
 }
 
 export function gameOver() {
+    console.log("this is the end")
     //print results
     //display reset button
     //clear
