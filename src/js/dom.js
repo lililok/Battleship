@@ -1,7 +1,6 @@
 import { Ship } from "./classes.js";
-import { passTurns } from "./states.js";
 
-export function startForm(isSecond) {
+export function startForm() {
     const body = document.querySelector('body');
 
     const dialog = document.createElement("dialog");
@@ -10,6 +9,15 @@ export function startForm(isSecond) {
     const form = document.createElement("form");
     form.id = "start-form";
 
+    const welcomeText = document.createElement("div");
+    welcomeText.textContent = "Welcome to Battleship!";
+    welcomeText.id = "welcome-text";
+    form.appendChild(welcomeText);
+
+    const playerNameLabel = document.createElement("label");
+    playerNameLabel.textContent = "Enter your name:";
+    playerNameLabel.setAttribute('for', 'player-name-input');
+    form.appendChild(playerNameLabel);
     const playerName = document.createElement("input");
     playerName.type = "text";
     playerName.id = "player-name-input";
@@ -17,17 +25,10 @@ export function startForm(isSecond) {
     playerName.placeholder = "Name";
     form.appendChild(playerName);
 
-    if (isSecond === true) {
-        const typeInput = document.createElement("input");
-        typeInput.type = "checkbox"
-        typeInput.id = "player-type-input";
-        form.appendChild(typeInput);
-    }
-
     const submitButton = document.createElement("button");
     submitButton.id = 'submit-button';
     submitButton.type = "submit";
-    submitButton.textContent = "submit";
+    submitButton.textContent = "New game";
     form.appendChild(submitButton);
 
     dialog.appendChild(form)
@@ -38,53 +39,75 @@ export function startForm(isSecond) {
     return dialog;
 }
 
-export function placeShips(playerContainer, player) {
-    const shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
-    let shipSizesIndex = 0;
+export function endForm(winner) {
+    const body = document.querySelector('body');
 
-    function eventListeners(direction) {
-        if (shipSizesIndex === shipSizes.length) {
-            //passTurns(playerContainer);
+    const dialog = document.createElement("dialog");
+    dialog.id = "end-dialog";
+
+    const form = document.createElement("form");
+    form.id = "end-form";
+
+    const results = document.createElement("div");
+    results.textContent = `${winner} is the winner!!!`;
+    form.appendChild(results);
+
+    const resetButton = document.createElement("button");
+    resetButton.id = 'reset-button';
+    resetButton.type = "submit";
+    resetButton.textContent = "Play again";
+    form.appendChild(resetButton);
+
+    dialog.appendChild(form)
+    body.appendChild(dialog)
+
+    dialog.showModal();
+
+    return dialog;
+}
+
+export function placeShips(player, container) {
+    let shipSizesIndex = 0;
+    let direction = 'horizontal';
+
+    const directionButton = document.createElement("button")
+    directionButton.id = direction;
+    directionButton.textContent = `rotate (${direction})`;
+    container.appendChild(directionButton)
+
+    directionButton.addEventListener('click', function () {
+        if (directionButton.id === 'vertical') {
+            directionButton.id = 'horizontal';
+            direction = 'horizontal';
+        } else if (directionButton.id === 'horizontal') {
+            directionButton.id = 'vertical';
+            direction = 'vertical';
+        }
+        directionButton.textContent = `rotate (${direction})`;
+    });
+
+
+    function eventListeners() {
+        if (shipSizesIndex === player.gameboard.shipSizes.length) {
+            directionButton.remove();
             return;
         }
 
-        const boardDiv = playerContainer.querySelector("#board-container");
-
-        const directionButton = document.createElement("button")
-        directionButton.id = direction;
-        directionButton.textContent = "change direction";
-        playerContainer.appendChild(directionButton)
-
-        directionButton.addEventListener('click', function () {
-            if (directionButton.id === 'vertical') {
-                directionButton.id = 'horizontal';
-                direction = 'horizontal'
-            } else if (directionButton.id === 'horizontal') {
-                directionButton.id = 'vertical';
-                direction = 'vertical'
-            }
-        });
-
+        const boardDiv = container.querySelector("#board-container");
         const rowDivs = boardDiv.querySelectorAll(".row");
 
         rowDivs.forEach(rowDiv => {
             const cells = rowDiv.querySelectorAll("div");
             cells.forEach(cell => {
                 cell.addEventListener('click', function () {
-                    const newShip = new Ship(shipSizes[shipSizesIndex], JSON.parse(cell.id), directionButton.id)
-                    console.log(newShip)
-
+                    const newShip = new Ship(player.gameboard.shipSizes[shipSizesIndex], JSON.parse(cell.id), directionButton.id)
                     player.gameboard.coordinate(newShip)
-                    console.log(player.gameboard)
-
                     shipSizesIndex++;
-                    playerContainer.innerHTML = '';
-
-                    playerContainer.appendChild(player.gameboard.render())
-                    eventListeners(direction)
+                    container.replaceChild(player.gameboard.render(), boardDiv);
+                    eventListeners()
                 });
             });
         });
     }
-    eventListeners('vertical')
+    eventListeners()
 }

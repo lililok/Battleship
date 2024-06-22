@@ -24,48 +24,61 @@ export class Gameboard {
     constructor() {
         this.current = Array.from({ length: 10 }, () => Array(10).fill(0));
         this.ships = []
+        this.shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
         this.visited = 0
         this.hits = 0
     }
 
     coordinate(ship) {
         if (!this.validation(ship)) {
-            throw new Error("you almost broke the game -_-, try again!!!");
+            throw new Error("you almost broke the game -_- try again!!!");
         }
-
-        this.ships.push(ship)
 
         if (ship.direction === 'horizontal') {
             for (let i = 0; i < ship.shipLength; i++) {
-                this.current[ship.position[0]][ship.position[1] + i] = 1;
+                this.current[ship.position[0]][ship.position[1]+i] = 1;
+                ship.position.push([ship.position[0], ship.position[1] + i]);
             }
         } else {
             for (let i = 0; i < ship.shipLength; i++) {
-                this.current[ship.position[0] + i][ship.position[1]] = 1;
+                this.current[ship.position[0]+i][ship.position[1]] = 1;
+                ship.position.push([ship.position[0] + i, ship.position[1]]);
             }
         }
+
+        ship.position.splice(0,2)
+        this.ships.push(ship)
     }
     
     receiveAttack(positionHit) {
+        let found = false
+
         this.ships.forEach(ship => {
             ship.position.forEach(pos => {
-                if (pos[0] === positionHit[0] && pos[1] === positionHit[1]) {
+                if (!found && pos[0] === positionHit[0] && pos[1] === positionHit[1]) {
                     ship.hit();
                     this.hits++;
+                    this.visited++;
+                    this.current[positionHit[0]][positionHit[1]] = 3;
+                    found = true;
                 }
             });
         });
-        this.current[positionHit[0]][positionHit[1]] = 2;
-        this.visited++;
+        
+        if (!found) {
+            this.current[positionHit[0]][positionHit[1]] = 2;
+            this.visited++;
+        }
     }
 
     isEndGame() {
         if (this.visited === 100) {
-            console.log('No more place!!! 0_0')
+            return true;
         }
-        if (this.hits === 30) {
-            console.log('You lost!!! >:]')
+        if (this.hits === 20) {
+            return true;
         }
+        return false;
     }
 
     render() {
@@ -142,6 +155,25 @@ export class Gameboard {
         }
 
         return true;
+    }
+
+    randomize() {
+        this.shipSizes.forEach(size => {
+            let placed = false;
+
+            while (!placed) {
+                const direction = Math.random() < 0.5 ? 'horizontal' : 'vertical';
+                const row = Math.floor(Math.random() * 10);
+                const col = Math.floor(Math.random() * 10);
+
+                const newShip = new Ship(size, [row, col], direction);
+
+                if (this.validation(newShip)) {
+                    this.coordinate(newShip);
+                    placed = true;
+                }
+            }
+        });
     }
 }
 
