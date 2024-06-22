@@ -1,4 +1,4 @@
-import { gameStartShips, gameStartForm } from "./js/states.js";
+import { gameStartShips, gameStartForm, gameOver } from "./js/states.js";
 import { Ship, Gameboard, Player } from "./js/classes.js";
 import './styles.css';
 
@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const playerOne = new Player('Ajax', 'human', playerOneGameBoard)
     const playerTwo = new Player('Bot', 'computer', playerTwoGameBoard)
+
+    //gameStartForm()
 
     gameStartShips(playerOne, playerTwo)
 });

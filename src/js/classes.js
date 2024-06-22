@@ -73,11 +73,9 @@ export class Gameboard {
 
     isEndGame() {
         if (this.visited === 100) {
-            console.log('No more place!!! 0_0')
             return true;
         }
         if (this.hits === 20) {
-            console.log('You lost!!! >:]')
             return true;
         }
         return false;
