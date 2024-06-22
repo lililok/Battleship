@@ -1,6 +1,5 @@
 import { startForm, endForm, placeShips } from "./dom.js";
 import { Ship, Gameboard, Player } from "./classes.js";
-import robotIcon from '../assets/robotIcon.png';
 import userIcon from '../assets/userIcon.png';
 
 export function gameStartForm() {
@@ -24,41 +23,23 @@ export function gameStartForm() {
 }
 
 export function gameStartShips(player, bot) {
-    //const playerContainer = document.querySelector('.player-1');
-    //playerContainer.appendChild(player.gameboard.render())
-    //player.gameboard.randomize()
     const playerContainer = document.querySelector('.player-1');
     const userIconImg = document.createElement("img");
     userIconImg.className = 'user-icon';
     userIconImg.src = userIcon;
     playerContainer.appendChild(userIconImg)
     playerContainer.appendChild(player.gameboard.render())
-    placeShips(player, playerContainer)
-
-    const botContainer = document.querySelector('.player-2');
-    const robotIconImg = document.createElement("img");
-    robotIconImg.className = 'robot-icon';
-    robotIconImg.src = robotIcon;
-    botContainer.appendChild(robotIconImg)
-
-    //bot.gameboard.randomize()
-    //botContainer.appendChild(bot.gameboard.render())
-    //hide bots current ships
-
-    const positions = allPositions();
-    const shuffled = shuffle(positions);
-    
-    gameCurrent(player, bot, shuffled)
+    placeShips(player, playerContainer, bot)
 }
 
-export function gameCurrent(player, bot, shuffled) {
+export function gameCurrent(player, bot) {
     const botBoardDiv = document.querySelector(".player-2 #board-container");
     const playerBoardDiv = document.querySelector(".player-1 #board-container");
     const playerContainer = document.querySelector('.player-1');
     const botContainer = document.querySelector('.player-2');
 
-    /*bot.gameboard.randomize()
-    botContainer.appendChild(bot.gameboard.render())*/
+    const positions = allPositions();
+    const shuffled = shuffle(positions);
 
     const rowDivs = botBoardDiv.querySelectorAll(".row");
 
@@ -69,7 +50,9 @@ export function gameCurrent(player, bot, shuffled) {
                 cell.addEventListener('click', function () {
                     const positionHit = JSON.parse(cell.id);
                     bot.gameboard.receiveAttack(positionHit);
-                    botContainer.replaceChild(bot.gameboard.render(), botBoardDiv);
+                    botContainer.replaceChild(bot.gameboard.render(true), botBoardDiv);
+
+                    //set timeout to clicks
     
                     const randomPosition = shuffled.pop();
                     player.gameboard.receiveAttack(randomPosition);
@@ -91,7 +74,7 @@ export function gameCurrent(player, bot, shuffled) {
 }
 
 export function gameOver(player, bot) {
-    const form = endForm(player.gameboard.isEndGame() ? bot.name : player.name)
+    const form = endForm(bot.gameboard.isEndGame() ? player.name : bot.name)
 
     form.addEventListener("submit", function(event) {
         event.preventDefault();

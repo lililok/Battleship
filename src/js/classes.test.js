@@ -1,4 +1,4 @@
-import { Ship, Gameboard } from "./js/classes.js";
+import { Ship, Gameboard } from "./classes.js";
 
 test('pass validation, placed on board', () => {
     let testBoard = new Gameboard();
@@ -37,16 +37,14 @@ test('not passed validation on collision', () => {
     testBoard.coordinate(testShipOne);
 
     expect(() => {
-        testBoard.validation(testShipTwo);
-    }).toBe(false);
+        testBoard.coordinate(testShipTwo);
+    }).toThrow();
 });
 
 test('not passed validation on bounds', () => {
     let testBoard = new Gameboard();
     let invalidShip = new Ship(1, [10, 10], 'vertical');
 
-    expect(() => {
-        testBoard.validation(invalidShip);
-    }).toBe(false);
+    expect(testBoard.validation(invalidShip)).toEqual(false);
 });
 

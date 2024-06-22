@@ -32,6 +32,7 @@ export class Gameboard {
     coordinate(ship) {
         if (!this.validation(ship)) {
             throw new Error("you almost broke the game -_- try again!!!");
+            //add some kind of animation
         }
 
         if (ship.direction === 'horizontal') {
@@ -72,16 +73,10 @@ export class Gameboard {
     }
 
     isEndGame() {
-        if (this.visited === 100) {
-            return true;
-        }
-        if (this.hits === 20) {
-            return true;
-        }
-        return false;
+        return this.visited === 100 || this.hits === 20;
     }
 
-    render() {
+    render(isHidden=false) {
         const boardDiv = document.createElement("div");
         boardDiv.id = "board-container"
 
@@ -94,6 +89,8 @@ export class Gameboard {
                 boardCell.id = `[${indexRow}, ${indexCol}]`;
     
                 if (cell === 0) {
+                    boardCell.className = "unvisited";
+                } else if (cell === 1 && isHidden) {
                     boardCell.className = "unvisited";
                 } else if (cell === 1) {
                     boardCell.className = "unvisited ship";

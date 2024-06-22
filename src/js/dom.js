@@ -1,4 +1,6 @@
 import { Ship } from "./classes.js";
+import { gameCurrent } from "./states.js";
+import robotIcon from '../assets/robotIcon.png';
 
 export function startForm() {
     const body = document.querySelector('body');
@@ -66,13 +68,13 @@ export function endForm(winner) {
     return dialog;
 }
 
-export function placeShips(player, container) {
+export function placeShips(player, container, bot) {
     let shipSizesIndex = 0;
-    let direction = 'horizontal';
+    let direction = 'vertical';
 
     const directionButton = document.createElement("button")
     directionButton.id = direction;
-    directionButton.textContent = `rotate (${direction})`;
+    directionButton.textContent = `rotate (to ${direction})`;
     container.appendChild(directionButton)
 
     directionButton.addEventListener('click', function () {
@@ -83,14 +85,15 @@ export function placeShips(player, container) {
             directionButton.id = 'vertical';
             direction = 'vertical';
         }
-        directionButton.textContent = `rotate (${direction})`;
+        directionButton.textContent = `rotate (to ${direction})`;
     });
 
 
     function eventListeners() {
         if (shipSizesIndex === player.gameboard.shipSizes.length) {
             directionButton.remove();
-            return;
+            renderBot(bot)
+            gameCurrent(player, bot)
         }
 
         const boardDiv = container.querySelector("#board-container");
@@ -100,7 +103,7 @@ export function placeShips(player, container) {
             const cells = rowDiv.querySelectorAll("div");
             cells.forEach(cell => {
                 cell.addEventListener('click', function () {
-                    const newShip = new Ship(player.gameboard.shipSizes[shipSizesIndex], JSON.parse(cell.id), directionButton.id)
+                    const newShip = new Ship(player.gameboard.shipSizes[shipSizesIndex], JSON.parse(cell.id), direction)
                     player.gameboard.coordinate(newShip)
                     shipSizesIndex++;
                     container.replaceChild(player.gameboard.render(), boardDiv);
@@ -110,4 +113,15 @@ export function placeShips(player, container) {
         });
     }
     eventListeners()
+}
+
+function renderBot(bot) {
+    const botContainer = document.querySelector('.player-2');
+    const robotIconImg = document.createElement("img");
+    robotIconImg.className = 'robot-icon';
+    robotIconImg.src = robotIcon;
+    botContainer.appendChild(robotIconImg)
+
+    bot.gameboard.randomize()
+    botContainer.appendChild(bot.gameboard.render(true))
 }

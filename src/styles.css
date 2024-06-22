@@ -27,7 +27,8 @@ https://colorhunt.co/palette/ff0000ffa27fffe8c597be5a
     flex-direction: row;
     height: 80%;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 50px;
 }
 
 h1 {
