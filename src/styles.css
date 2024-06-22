@@ -122,6 +122,10 @@ img {
     margin-bottom: 20px;
 }
 
+#vertical, #horizontal {
+    margin-top: 10px;
+}
+
 /* cells */
 
 .unvisited.ship {

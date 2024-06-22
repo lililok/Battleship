@@ -68,29 +68,32 @@ export function endForm(winner) {
 
 export function placeShips(player, container) {
     let shipSizesIndex = 0;
+    let direction = 'horizontal';
 
-    function eventListeners(direction) {
+    const directionButton = document.createElement("button")
+    directionButton.id = direction;
+    directionButton.textContent = `rotate (${direction})`;
+    container.appendChild(directionButton)
+
+    directionButton.addEventListener('click', function () {
+        if (directionButton.id === 'vertical') {
+            directionButton.id = 'horizontal';
+            direction = 'horizontal';
+        } else if (directionButton.id === 'horizontal') {
+            directionButton.id = 'vertical';
+            direction = 'vertical';
+        }
+        directionButton.textContent = `rotate (${direction})`;
+    });
+
+
+    function eventListeners() {
         if (shipSizesIndex === player.gameboard.shipSizes.length) {
+            directionButton.remove();
             return;
         }
 
         const boardDiv = container.querySelector("#board-container");
-
-        const directionButton = document.createElement("button")
-        directionButton.id = direction;
-        directionButton.textContent = "change direction";
-        container.appendChild(directionButton)
-
-        directionButton.addEventListener('click', function () {
-            if (directionButton.id === 'vertical') {
-                directionButton.id = 'horizontal';
-                direction = 'horizontal'
-            } else if (directionButton.id === 'horizontal') {
-                directionButton.id = 'vertical';
-                direction = 'vertical'
-            }
-        });
-
         const rowDivs = boardDiv.querySelectorAll(".row");
 
         rowDivs.forEach(rowDiv => {
@@ -100,12 +103,11 @@ export function placeShips(player, container) {
                     const newShip = new Ship(player.gameboard.shipSizes[shipSizesIndex], JSON.parse(cell.id), directionButton.id)
                     player.gameboard.coordinate(newShip)
                     shipSizesIndex++;
-                    container.innerHTML = '';
-                    container.appendChild(player.gameboard.render())
-                    eventListeners(direction)
+                    container.replaceChild(player.gameboard.render(), boardDiv);
+                    eventListeners()
                 });
             });
         });
     }
-    eventListeners('vertical')
+    eventListeners()
 }
