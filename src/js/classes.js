@@ -32,7 +32,6 @@ export class Gameboard {
     coordinate(ship) {
         if (!this.validation(ship)) {
             throw new Error("you almost broke the game -_- try again!!!");
-            //add some kind of animation
         }
 
         if (ship.direction === 'horizontal') {

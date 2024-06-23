@@ -70,7 +70,7 @@ export function endForm(winner) {
 
 export function placeShips(player, container, bot) {
     let shipSizesIndex = 0;
-    let direction = 'vertical';
+    let direction = 'horizontal';
 
     const directionButton = document.createElement("button")
     directionButton.id = direction;
@@ -92,8 +92,11 @@ export function placeShips(player, container, bot) {
     function eventListeners() {
         if (shipSizesIndex === player.gameboard.shipSizes.length) {
             directionButton.remove();
-            renderBot(bot)
-            gameCurrent(player, bot)
+            const botContainer = document.querySelector('.player-2');
+            botContainer.appendChild(renderBot(bot))
+            const positions = allPositions();
+            const shuffled = shuffle(positions);
+            gameCurrent(player, bot, shuffled);
         }
 
         const boardDiv = container.querySelector("#board-container");
@@ -123,5 +126,23 @@ function renderBot(bot) {
     botContainer.appendChild(robotIconImg)
 
     bot.gameboard.randomize()
-    botContainer.appendChild(bot.gameboard.render(true))
+    return bot.gameboard.render(true)
+}
+
+function allPositions() {
+    const positions = [];
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            positions.push([i, j]);
+        }
+    }
+    return positions;
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }

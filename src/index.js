@@ -9,7 +9,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerOne = new Player('Ajax', 'human', playerOneGameBoard)
     const playerTwo = new Player('Bot', 'computer', playerTwoGameBoard)
 
-    //gameStartForm()
-
-    gameStartShips(playerOne, playerTwo)
+    gameStartForm()
 });

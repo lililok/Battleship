@@ -29,17 +29,15 @@ export function gameStartShips(player, bot) {
     userIconImg.src = userIcon;
     playerContainer.appendChild(userIconImg)
     playerContainer.appendChild(player.gameboard.render())
+
     placeShips(player, playerContainer, bot)
 }
 
-export function gameCurrent(player, bot) {
+export function gameCurrent(player, bot, shuffled) {
     const botBoardDiv = document.querySelector(".player-2 #board-container");
     const playerBoardDiv = document.querySelector(".player-1 #board-container");
     const playerContainer = document.querySelector('.player-1');
     const botContainer = document.querySelector('.player-2');
-
-    const positions = allPositions();
-    const shuffled = shuffle(positions);
 
     const rowDivs = botBoardDiv.querySelectorAll(".row");
 
@@ -51,8 +49,6 @@ export function gameCurrent(player, bot) {
                     const positionHit = JSON.parse(cell.id);
                     bot.gameboard.receiveAttack(positionHit);
                     botContainer.replaceChild(bot.gameboard.render(true), botBoardDiv);
-
-                    //set timeout to clicks
     
                     const randomPosition = shuffled.pop();
                     player.gameboard.receiveAttack(randomPosition);
@@ -98,21 +94,4 @@ export function gameOver(player, bot) {
     });
 }
 
-function allPositions() {
-    const positions = [];
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-            positions.push([i, j]);
-        }
-    }
-    return positions;
-}
-
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
 
